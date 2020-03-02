@@ -10354,7 +10354,7 @@ function create_default_slot_2(ctx) {
 
 	const map = new _components_Map_svelte__WEBPACK_IMPORTED_MODULE_2__["default"]({
 			props: {
-				width: Math.floor(/*width*/ ctx[0]),
+				width: Math.floor(/*width*/ ctx[1]),
 				aspect: "1:1",
 				mapLocation: "./data/nederland.json",
 				mapCollection: "nederland",
@@ -10363,6 +10363,8 @@ function create_default_slot_2(ctx) {
 				labelVar: "NAME_1"
 			}
 		});
+
+	map.$on("mapclick", /*mapclick_handler*/ ctx[0]);
 
 	return {
 		c() {
@@ -10374,7 +10376,7 @@ function create_default_slot_2(ctx) {
 		},
 		p(ctx, dirty) {
 			const map_changes = {};
-			if (dirty & /*width*/ 1) map_changes.width = Math.floor(/*width*/ ctx[0]);
+			if (dirty & /*width*/ 2) map_changes.width = Math.floor(/*width*/ ctx[1]);
 			map.$set(map_changes);
 		},
 		i(local) {
@@ -10392,13 +10394,13 @@ function create_default_slot_2(ctx) {
 	};
 }
 
-// (24:0) <ResponsiveWrapper let:width={width}>
+// (25:0) <ResponsiveWrapper let:width={width}>
 function create_default_slot_1(ctx) {
 	let current;
 
 	const map = new _components_Map_svelte__WEBPACK_IMPORTED_MODULE_2__["default"]({
 			props: {
-				width: Math.floor(/*width*/ ctx[0]),
+				width: Math.floor(/*width*/ ctx[1]),
 				aspect: "16:9",
 				mapLocation: "./data/colombia_mun.json",
 				mapCollection: "colombia_mun",
@@ -10418,7 +10420,7 @@ function create_default_slot_1(ctx) {
 		},
 		p(ctx, dirty) {
 			const map_changes = {};
-			if (dirty & /*width*/ 1) map_changes.width = Math.floor(/*width*/ ctx[0]);
+			if (dirty & /*width*/ 2) map_changes.width = Math.floor(/*width*/ ctx[1]);
 			map.$set(map_changes);
 		},
 		i(local) {
@@ -10436,13 +10438,13 @@ function create_default_slot_1(ctx) {
 	};
 }
 
-// (35:0) <ResponsiveWrapper let:width={width}>
+// (36:0) <ResponsiveWrapper let:width={width}>
 function create_default_slot(ctx) {
 	let current;
 
 	const map = new _components_Map_svelte__WEBPACK_IMPORTED_MODULE_2__["default"]({
 			props: {
-				width: Math.floor(/*width*/ ctx[0]),
+				width: Math.floor(/*width*/ ctx[1]),
 				aspect: "16:9",
 				mapLocation: "./data/world.topojson",
 				showLabel: true,
@@ -10460,7 +10462,7 @@ function create_default_slot(ctx) {
 		},
 		p(ctx, dirty) {
 			const map_changes = {};
-			if (dirty & /*width*/ 1) map_changes.width = Math.floor(/*width*/ ctx[0]);
+			if (dirty & /*width*/ 2) map_changes.width = Math.floor(/*width*/ ctx[1]);
 			map.$set(map_changes);
 		},
 		i(local) {
@@ -10492,8 +10494,8 @@ function create_fragment(ctx) {
 				$$slots: {
 					default: [
 						create_default_slot_2,
-						({ width }) => ({ 0: width }),
-						({ width }) => width ? 1 : 0
+						({ width }) => ({ 1: width }),
+						({ width }) => width ? 2 : 0
 					]
 				},
 				$$scope: { ctx }
@@ -10505,8 +10507,8 @@ function create_fragment(ctx) {
 				$$slots: {
 					default: [
 						create_default_slot_1,
-						({ width }) => ({ 0: width }),
-						({ width }) => width ? 1 : 0
+						({ width }) => ({ 1: width }),
+						({ width }) => width ? 2 : 0
 					]
 				},
 				$$scope: { ctx }
@@ -10518,8 +10520,8 @@ function create_fragment(ctx) {
 				$$slots: {
 					default: [
 						create_default_slot,
-						({ width }) => ({ 0: width }),
-						({ width }) => width ? 1 : 0
+						({ width }) => ({ 1: width }),
+						({ width }) => width ? 2 : 0
 					]
 				},
 				$$scope: { ctx }
@@ -10556,21 +10558,21 @@ function create_fragment(ctx) {
 		p(ctx, [dirty]) {
 			const responsivewrapper0_changes = {};
 
-			if (dirty & /*$$scope, width*/ 3) {
+			if (dirty & /*$$scope, width*/ 6) {
 				responsivewrapper0_changes.$$scope = { dirty, ctx };
 			}
 
 			responsivewrapper0.$set(responsivewrapper0_changes);
 			const responsivewrapper1_changes = {};
 
-			if (dirty & /*$$scope, width*/ 3) {
+			if (dirty & /*$$scope, width*/ 6) {
 				responsivewrapper1_changes.$$scope = { dirty, ctx };
 			}
 
 			responsivewrapper1.$set(responsivewrapper1_changes);
 			const responsivewrapper2_changes = {};
 
-			if (dirty & /*$$scope, width*/ 3) {
+			if (dirty & /*$$scope, width*/ 6) {
 				responsivewrapper2_changes.$$scope = { dirty, ctx };
 			}
 
@@ -10600,10 +10602,18 @@ function create_fragment(ctx) {
 	};
 }
 
+function instance($$self) {
+	const mapclick_handler = feature => {
+		console.log(feature.detail);
+	};
+
+	return [mapclick_handler];
+}
+
 class App extends svelte_internal__WEBPACK_IMPORTED_MODULE_0__["SvelteComponent"] {
 	constructor(options) {
 		super();
-		Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["init"])(this, options, null, create_fragment, svelte_internal__WEBPACK_IMPORTED_MODULE_0__["safe_not_equal"], {});
+		Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["init"])(this, options, instance, create_fragment, svelte_internal__WEBPACK_IMPORTED_MODULE_0__["safe_not_equal"], {});
 	}
 }
 
@@ -10715,16 +10725,17 @@ const { Map: Map_1 } = svelte_internal__WEBPACK_IMPORTED_MODULE_0__["globals"];
 
 
 
+
 function get_each_context(ctx, list, i) {
 	const child_ctx = ctx.slice();
-	child_ctx[25] = list[i];
+	child_ctx[27] = list[i];
 	return child_ctx;
 }
 
-// (99:0) {:catch err}
+// (110:0) {:catch err}
 function create_catch_block(ctx) {
 	let p;
-	let t_value = /*err*/ ctx[24] + "";
+	let t_value = /*err*/ ctx[26] + "";
 	let t;
 
 	return {
@@ -10745,7 +10756,7 @@ function create_catch_block(ctx) {
 	};
 }
 
-// (72:0) {:then map }
+// (82:0) {:then map }
 function create_then_block(ctx) {
 	let svg;
 	let g;
@@ -10756,7 +10767,7 @@ function create_then_block(ctx) {
 	let if_block_anchor;
 	let current;
 	let each_value = /*mapData*/ ctx[2].features;
-	const get_key = ctx => /*feature*/ ctx[25].properties[/*pathId*/ ctx[1]];
+	const get_key = ctx => /*feature*/ ctx[27].properties[/*pathId*/ ctx[1]];
 
 	for (let i = 0; i < each_value.length; i += 1) {
 		let child_ctx = get_each_context(ctx, each_value, i);
@@ -10811,7 +10822,7 @@ function create_then_block(ctx) {
 				Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["attr"])(rect, "height", /*height*/ ctx[5]);
 			}
 
-			if (dirty & /*mapData, pathId, mapPath, handleMouseover, event, handleMouseout*/ 838) {
+			if (dirty & /*mapData, pathId, mapPath, handleMouseover, event, handleMouseout, handleClick*/ 1734) {
 				const each_value = /*mapData*/ ctx[2].features;
 				each_blocks = Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["update_keyed_each"])(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, g, svelte_internal__WEBPACK_IMPORTED_MODULE_0__["destroy_block"], create_each_block, null, get_each_context);
 			}
@@ -10867,7 +10878,7 @@ function create_then_block(ctx) {
 	};
 }
 
-// (82:12) {#each mapData.features as feature (feature.properties[pathId])}
+// (92:12) {#each mapData.features as feature (feature.properties[pathId])}
 function create_each_block(key_1, ctx) {
 	let path;
 	let path_id_value;
@@ -10879,9 +10890,9 @@ function create_each_block(key_1, ctx) {
 		first: null,
 		c() {
 			path = Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["svg_element"])("path");
-			Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["attr"])(path, "id", path_id_value = /*feature*/ ctx[25].properties[/*pathId*/ ctx[1]]);
+			Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["attr"])(path, "id", path_id_value = /*feature*/ ctx[27].properties[/*pathId*/ ctx[1]]);
 			Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["attr"])(path, "class", "country");
-			Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["attr"])(path, "d", path_d_value = /*mapPath*/ ctx[6](/*feature*/ ctx[25]));
+			Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["attr"])(path, "d", path_d_value = /*mapPath*/ ctx[6](/*feature*/ ctx[27]));
 			this.first = path;
 		},
 		m(target, anchor) {
@@ -10889,19 +10900,22 @@ function create_each_block(key_1, ctx) {
 
 			dispose = [
 				Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["listen"])(path, "mouseover", function () {
-					if (Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["is_function"])(/*handleMouseover*/ ctx[8](event, /*feature*/ ctx[25]))) /*handleMouseover*/ ctx[8](event, /*feature*/ ctx[25]).apply(this, arguments);
+					if (Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["is_function"])(/*handleMouseover*/ ctx[9](event, /*feature*/ ctx[27]))) /*handleMouseover*/ ctx[9](event, /*feature*/ ctx[27]).apply(this, arguments);
 				}),
-				Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["listen"])(path, "mouseout", /*handleMouseout*/ ctx[9])
+				Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["listen"])(path, "mouseout", /*handleMouseout*/ ctx[10]),
+				Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["listen"])(path, "click", function () {
+					if (Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["is_function"])(/*handleClick*/ ctx[7](/*feature*/ ctx[27]))) /*handleClick*/ ctx[7](/*feature*/ ctx[27]).apply(this, arguments);
+				})
 			];
 		},
 		p(new_ctx, dirty) {
 			ctx = new_ctx;
 
-			if (dirty & /*mapData, pathId*/ 6 && path_id_value !== (path_id_value = /*feature*/ ctx[25].properties[/*pathId*/ ctx[1]])) {
+			if (dirty & /*mapData, pathId*/ 6 && path_id_value !== (path_id_value = /*feature*/ ctx[27].properties[/*pathId*/ ctx[1]])) {
 				Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["attr"])(path, "id", path_id_value);
 			}
 
-			if (dirty & /*mapPath, mapData*/ 68 && path_d_value !== (path_d_value = /*mapPath*/ ctx[6](/*feature*/ ctx[25]))) {
+			if (dirty & /*mapPath, mapData*/ 68 && path_d_value !== (path_d_value = /*mapPath*/ ctx[6](/*feature*/ ctx[27]))) {
 				Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["attr"])(path, "d", path_d_value);
 			}
 		},
@@ -10912,18 +10926,18 @@ function create_each_block(key_1, ctx) {
 	};
 }
 
-// (94:4) {#if hoveredInfo !== null}
+// (105:4) {#if hoveredInfo !== null}
 function create_if_block(ctx) {
 	let updating_content;
 	let updating_position;
 	let current;
 
 	function hoverbox_content_binding(value) {
-		/*hoverbox_content_binding*/ ctx[21].call(null, value);
+		/*hoverbox_content_binding*/ ctx[23].call(null, value);
 	}
 
 	function hoverbox_position_binding(value) {
-		/*hoverbox_position_binding*/ ctx[22].call(null, value);
+		/*hoverbox_position_binding*/ ctx[24].call(null, value);
 	}
 
 	let hoverbox_props = {};
@@ -10980,7 +10994,7 @@ function create_if_block(ctx) {
 	};
 }
 
-// (70:19)      <p>...Waiting</p> {:then map }
+// (80:19)      <p>...Waiting</p> {:then map }
 function create_pending_block(ctx) {
 	let p;
 
@@ -11013,12 +11027,12 @@ function create_fragment(ctx) {
 		pending: create_pending_block,
 		then: create_then_block,
 		catch: create_catch_block,
-		value: 23,
-		error: 24,
+		value: 25,
+		error: 26,
 		blocks: [,,,]
 	};
 
-	Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["handle_promise"])(promise = /*mapPromise*/ ctx[7], info);
+	Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["handle_promise"])(promise = /*mapPromise*/ ctx[8], info);
 
 	return {
 		c() {
@@ -11037,7 +11051,7 @@ function create_fragment(ctx) {
 
 			{
 				const child_ctx = ctx.slice();
-				child_ctx[23] = info.resolved;
+				child_ctx[25] = info.resolved;
 				info.block.p(child_ctx, dirty);
 			}
 		},
@@ -11065,6 +11079,7 @@ function create_fragment(ctx) {
 
 function instance($$self, $$props, $$invalidate) {
 	const topojson = __webpack_require__(/*! topojson */ "./node_modules/topojson/index.js");
+	const dispatch = Object(svelte__WEBPACK_IMPORTED_MODULE_1__["createEventDispatcher"])();
 	let { mapLocation } = $$props;
 	let { width = 900 } = $$props;
 	let { aspect = "4:3" } = $$props;
@@ -11084,6 +11099,14 @@ function instance($$self, $$props, $$invalidate) {
 					reject(err);
 				});
 			});
+	};
+
+	const handleClick = feature => {
+		if (!feature) {
+			return;
+		}
+
+		dispatch("mapclick", feature);
 	};
 
 	let mapPromise = getMap();
@@ -11112,14 +11135,14 @@ function instance($$self, $$props, $$invalidate) {
 	}
 
 	$$self.$set = $$props => {
-		if ("mapLocation" in $$props) $$invalidate(10, mapLocation = $$props.mapLocation);
+		if ("mapLocation" in $$props) $$invalidate(11, mapLocation = $$props.mapLocation);
 		if ("width" in $$props) $$invalidate(0, width = $$props.width);
-		if ("aspect" in $$props) $$invalidate(11, aspect = $$props.aspect);
-		if ("mapCollection" in $$props) $$invalidate(12, mapCollection = $$props.mapCollection);
+		if ("aspect" in $$props) $$invalidate(12, aspect = $$props.aspect);
+		if ("mapCollection" in $$props) $$invalidate(13, mapCollection = $$props.mapCollection);
 		if ("pathId" in $$props) $$invalidate(1, pathId = $$props.pathId);
-		if ("margin" in $$props) $$invalidate(13, margin = $$props.margin);
-		if ("showLabel" in $$props) $$invalidate(14, showLabel = $$props.showLabel);
-		if ("labelVar" in $$props) $$invalidate(15, labelVar = $$props.labelVar);
+		if ("margin" in $$props) $$invalidate(14, margin = $$props.margin);
+		if ("showLabel" in $$props) $$invalidate(15, showLabel = $$props.showLabel);
+		if ("labelVar" in $$props) $$invalidate(16, labelVar = $$props.labelVar);
 	};
 
 	let height;
@@ -11129,23 +11152,23 @@ function instance($$self, $$props, $$invalidate) {
 	let mapPath;
 
 	$$self.$$.update = () => {
-		if ($$self.$$.dirty & /*width, aspect*/ 2049) {
+		if ($$self.$$.dirty & /*width, aspect*/ 4097) {
 			$: $$invalidate(5, height = width / aspect.split(":")[0] * aspect.split(":")[1]);
 		}
 
-		if ($$self.$$.dirty & /*width, margin*/ 8193) {
-			$: $$invalidate(16, canvasWidth = width - margin.left - margin.right);
+		if ($$self.$$.dirty & /*width, margin*/ 16385) {
+			$: $$invalidate(17, canvasWidth = width - margin.left - margin.right);
 		}
 
-		if ($$self.$$.dirty & /*height, margin*/ 8224) {
-			$: $$invalidate(17, canvasHeight = height - margin.top - margin.bottom);
+		if ($$self.$$.dirty & /*height, margin*/ 16416) {
+			$: $$invalidate(18, canvasHeight = height - margin.top - margin.bottom);
 		}
 
-		if ($$self.$$.dirty & /*margin, canvasWidth, canvasHeight, mapData*/ 204804) {
-			$: $$invalidate(18, projection = Object(d3_geo__WEBPACK_IMPORTED_MODULE_3__["geoNaturalEarth1"])().fitExtent([[margin.left, margin.top], [canvasWidth, canvasHeight]], mapData));
+		if ($$self.$$.dirty & /*margin, canvasWidth, canvasHeight, mapData*/ 409604) {
+			$: $$invalidate(19, projection = Object(d3_geo__WEBPACK_IMPORTED_MODULE_3__["geoNaturalEarth1"])().fitExtent([[margin.left, margin.top], [canvasWidth, canvasHeight]], mapData));
 		}
 
-		if ($$self.$$.dirty & /*projection*/ 262144) {
+		if ($$self.$$.dirty & /*projection*/ 524288) {
 			$: $$invalidate(6, mapPath = Object(d3_geo__WEBPACK_IMPORTED_MODULE_3__["geoPath"])().projection(projection));
 		}
 	};
@@ -11158,6 +11181,7 @@ function instance($$self, $$props, $$invalidate) {
 		hoverPosition,
 		height,
 		mapPath,
+		handleClick,
 		mapPromise,
 		handleMouseover,
 		handleMouseout,
@@ -11171,6 +11195,7 @@ function instance($$self, $$props, $$invalidate) {
 		canvasHeight,
 		projection,
 		topojson,
+		dispatch,
 		getMap,
 		hoverbox_content_binding,
 		hoverbox_position_binding
@@ -11182,14 +11207,14 @@ class Map extends svelte_internal__WEBPACK_IMPORTED_MODULE_0__["SvelteComponent"
 		super();
 
 		Object(svelte_internal__WEBPACK_IMPORTED_MODULE_0__["init"])(this, options, instance, create_fragment, svelte_internal__WEBPACK_IMPORTED_MODULE_0__["safe_not_equal"], {
-			mapLocation: 10,
+			mapLocation: 11,
 			width: 0,
-			aspect: 11,
-			mapCollection: 12,
+			aspect: 12,
+			mapCollection: 13,
 			pathId: 1,
-			margin: 13,
-			showLabel: 14,
-			labelVar: 15
+			margin: 14,
+			showLabel: 15,
+			labelVar: 16
 		});
 	}
 }

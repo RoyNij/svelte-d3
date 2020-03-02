@@ -1,10 +1,13 @@
 <script>
-    import { onMount } from 'svelte'
-    const topojson = require('topojson')
-    import { json } from 'd3-fetch'
-    import { geoAlbersUsa, geoNaturalEarth1, geoMercator, geoEqualEarth, geoPath } from 'd3-geo'
+    import { onMount } from 'svelte';
+    import { createEventDispatcher } from 'svelte';
+    const topojson = require('topojson');
+    import { json } from 'd3-fetch';
+    import { geoAlbersUsa, geoNaturalEarth1, geoMercator, geoEqualEarth, geoPath } from 'd3-geo';
     import HoverBox from './HoverBox.svelte';
 
+
+    const dispatch = createEventDispatcher();
 
     export let mapLocation;
     export let width = 900;
@@ -33,6 +36,13 @@
                     reject( err )
                 })
         })
+    }
+
+    const handleClick = ( feature ) => {
+        if(!feature){
+            return
+        }
+        dispatch('mapclick', feature);
     }
 
     let mapPromise = getMap();
@@ -85,6 +95,7 @@
                 d={mapPath(feature)}
                 on:mouseover={handleMouseover(event, feature)}
                 on:mouseout={handleMouseout}
+                on:click={handleClick(feature)}
             >
             </path>
             {/each}

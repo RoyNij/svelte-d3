@@ -13,6 +13,7 @@
                 pathId='NAME_1'
                 showLabel={true}
                 labelVar='NAME_1'
+                on:mapclick={feature => {console.log(feature.detail)}}
             />
         </ResponsiveWrapper>
     </div>
