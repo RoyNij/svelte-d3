@@ -1,0 +1,23 @@
+{
+  "name": "svelte-d3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "webpack.config.js",
+  "dependencies": {
+    "d3": "^5.15.0",
+    "svelte": "^3.19.1",
+    "topojson": "^3.0.2"
+  },
+  "devDependencies": {
+    "svelte-loader": "^2.13.6",
+    "webpack-cli": "^3.3.11",
+    "webpack": "^4.41.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --config webpack.config.js",
+    "watch": "webpack --config webpack.config.js --watch"
+  },
+  "author": "",
+  "license": "ISC"
+}
