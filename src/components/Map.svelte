@@ -70,7 +70,7 @@
     $: height = width/aspect.split(":")[0] * aspect.split(":")[1]
     $: canvasWidth = width - margin.left - margin.right
     $: canvasHeight = height - margin.top - margin.bottom
-    $: projection = geoNaturalEarth1()
+    $: projection = geoMercator()
         .fitExtent([[margin.left, margin.top],[canvasWidth, canvasHeight]], mapData)
     $: mapPath = geoPath()
         .projection(projection)
@@ -93,7 +93,7 @@
             <path id={feature.properties[pathId]}
                 class='country'
                 d={mapPath(feature)}
-                on:mouseover={handleMouseover(event, feature)}
+                on:mouseover={(evt) => handleMouseover(evt, feature)}
                 on:mouseout={handleMouseout}
                 on:click={handleClick(feature)}
             >
@@ -105,7 +105,6 @@
     {#if hoveredInfo !== null}
     <HoverBox bind:content={hoveredInfo}  bind:position={hoverPosition}/>
     {/if}
-
 
 {:catch err}
     <p>{err}</p>
