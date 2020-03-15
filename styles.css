@@ -3,21 +3,24 @@ body{
 }
 
 #app{
-    max-width: 1000px;
+    width: 100%;
     margin: auto;
 }
 
 .container{
-    display: flex;
+    /* display: flex;
     width: 100%;
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: space-between; */
 }
 
 .left, .right{
     width: 50%;
 }
 
+.container .responsive-wrapper{
+    background-color: #DEDEDE;
+}
 
 .map .background{
     fill: steelblue;
