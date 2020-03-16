@@ -7,8 +7,8 @@
 
 
 
-<ResponsiveWrapper let:width={width}>
-    <BarGraph data={rawData} width={width} animateHeight={true}/>
+<ResponsiveWrapper let:width={width} let:height={height}>
+    <BarGraph data={rawData} width={width} height={height} animateHeight={true}/>
 </ResponsiveWrapper>
 
 

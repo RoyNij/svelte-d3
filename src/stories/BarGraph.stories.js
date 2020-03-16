@@ -2,73 +2,75 @@ import BarGraph from './../components/BarGraph.svelte';
 import SortedBarGraph from './../views/SortedBarGraph.svelte';
 import ResponsiveBarGraph from './../views/ResponsiveBarGraph.svelte';
 import ResponsiveSortedBar from './../views/ResponsiveSortedBar.svelte';
+import FilterableBarGraph from './../views/FilterableBarGraph.svelte';
+import {generateWords} from './../utils/randomTextGenerator';
 
 export default {title : "Bargraph"};
 
 const testData = [
     {
-        x : "C",
-        y : 100
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "B",
-        y : 200
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "A",
-        y : 300
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "D",
-        y : 250
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "E",
-        y : 100
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "F",
-        y : 200
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "G",
-        y : 300
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "H",
-        y : 250
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "I",
-        y : Math.round(Math.random() * 400)
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "J",
-        y : Math.round(Math.random() * 400)
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "K",
-        y : Math.round(Math.random() * 400)
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "L",
-        y : Math.round(Math.random() * 400)
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "M",
-        y : Math.round(Math.random() * 400)
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "N",
-        y : Math.round(Math.random() * 400)
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "O",
-        y : Math.round(Math.random() * 400)
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     },
     {
-        x : "P",
-        y : Math.round(Math.random() * 400)
+        x : generateWords(Math.ceil(Math.random()*3)),
+        y : Math.round(Math.random() * 100000)
     }
 ]
 
@@ -83,7 +85,7 @@ export const SimpleBarGraph = () => ({
 export const AnimatedBarGraph = () => ({
     Component: BarGraph,
     props: {
-        data: testData,
+        data: [].concat(testData).splice(0, 7),
         animateHeight: true,
         color: "steelblue"
     }
@@ -106,6 +108,13 @@ export const ResponsiveBarGraphExample = () => ({
 
 export const ResponsiveSortableBarGraph = () => ({
     Component: ResponsiveSortedBar,
+    props: {
+        rawData: testData
+    }
+})
+
+export const FilterableBarGraphExample = () => ({
+    Component: FilterableBarGraph,
     props: {
         rawData: testData
     }

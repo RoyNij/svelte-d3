@@ -7,13 +7,6 @@ body{
     margin: auto;
 }
 
-.container{
-    /* display: flex;
-    width: 100%;
-    align-items: flex-start;
-    justify-content: space-between; */
-}
-
 .left, .right{
     width: 50%;
 }
@@ -46,5 +39,21 @@ body{
     border: solid 1px #AEAEAE;
     box-shadow: 3px 3px 5px rgba(0,0,0,0.4);
     font-family: "Roboto Condensed";
+    font-size: 12px;
+}
+
+.axis-label{
+    font-family: "Roboto";
+    font-size: 12px;
+}
+
+.y-grid line{
+    stroke: #DEDEDE;
+    stroke-width: 0.5;
+}
+
+.y-grid .label{
+    font-family: "Roboto";
+    fill: #BEBEBE;
     font-size: 12px;
 }
