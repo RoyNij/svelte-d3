@@ -1,0 +1,72 @@
+[
+	{
+		"label": "Bogotá, Colombia",
+		"long": -74.063644,
+		"lat": 4.624335
+	},
+	{
+		"label": "Paris, France",
+		"long": 2.3488,
+		"lat": 48.85341
+	},
+	{
+		"label": "Geneva, Switzerland",
+		"long": 6.143158,
+		"lat": 46.204391
+	},
+	{
+		"label": "Dakar, Senegal",
+		"long": -17.467686,
+		"lat": 14.716677
+	},
+	{
+		"label": "Beirut, Lebanon",
+		"long": 35.495480,
+		"lat": 33.888630
+	},
+	{
+		"label": "Addis Ababa, Ethiopia",
+		"long": 38.763611,
+		"lat": 9.005401
+	},
+	{
+		"label": "Nairobi, Kenya",
+		"long": 36.817223,
+		"lat": -1.286389
+	},
+	{
+		"label": "Nagpur, India",
+		"long": 79.088860,
+		"lat": 21.146633
+	},
+	{
+		"label": "Bangkok, Thailand",
+		"long": 100.523186,
+		"lat": 13.736717
+	},
+	{
+		"label": "New York City, USA",
+		"long": -73.935242,
+		"lat": 	40.730610
+	},
+	{
+		"label": "Seattle, USA",
+		"long": -122.335167,
+		"lat": 47.608013
+	},
+	{
+		"label": "San Francisco, USA",
+		"long": -122.431297,
+		"lat": 	37.773972
+	},
+	{
+		"label": "Washington D.C., USA",
+		"long":  -77.03637,
+		"lat": 	38.89511
+	},
+	{
+		"label": "Santiago, Chile",
+		"long": -70.645348,
+		"lat": -33.459229
+	}
+]

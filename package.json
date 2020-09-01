@@ -4,17 +4,20 @@
   "description": "",
   "main": "webpack.config.js",
   "dependencies": {
-    "d3": "^5.15.0",
-    "svelte": "^3.19.1",
+    "d3": "^5.16.0",
+    "lodash": "^4.17.20",
+    "save": "^2.4.0",
+    "svelte": "^3.24.1",
+    "three": "^0.120.1",
     "topojson": "^3.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.7",
-    "@storybook/svelte": "^5.3.17",
-    "babel-loader": "^8.0.6",
+    "@babel/core": "^7.11.5",
+    "@storybook/svelte": "^5.3.21",
+    "babel-loader": "^8.1.0",
     "svelte-loader": "^2.13.6",
-    "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11"
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

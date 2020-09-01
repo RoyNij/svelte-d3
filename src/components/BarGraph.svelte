@@ -7,7 +7,7 @@ import {select} from 'd3-selection'
 import {transition} from 'd3-transition'
 import {max} from 'd3-array'
 import Axis from './Axis.svelte'
-const _ = require('underscore');
+// const _ = require('underscore');
 
 export let width = 900;
 export let height = 600;
