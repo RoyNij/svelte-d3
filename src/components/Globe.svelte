@@ -184,6 +184,7 @@
 		result.forEach( ( d, i ) => {
 			d.lower = result.filter( ( dd, j ) =>  i !== j )
 				.some( dd => {
+					// Only move the one that is below the other
 					if( dd.lat > d.lat ){
 						return detectCircularCollision( d, dd, 20 )
 					}
