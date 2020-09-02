@@ -12,8 +12,7 @@
 	{
 		"label": "Geneva, Switzerland",
 		"long": 6.143158,
-		"lat": 46.204391,
-		"lower": true
+		"lat": 46.204391
 	},
 	{
 		"label": "Dakar, Senegal",
@@ -63,8 +62,7 @@
 	{
 		"label": "Washington D.C., USA",
 		"long":  -77.03637,
-		"lat": 	38.89511,
-		"lower": true
+		"lat": 	38.89511
 	},
 	{
 		"label": "Santiago, Chile",
