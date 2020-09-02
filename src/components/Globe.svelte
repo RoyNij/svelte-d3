@@ -17,7 +17,7 @@
 		geoCircle,
 		geoDistance
 	} from 'd3-geo';
-	import { throttle } from 'lodash';
+	import { roundRect } from './../helpers/canvas';
 
 	/**
 	 * PROPS
@@ -160,6 +160,7 @@
 
 	const drawData = () => {
 		const context = canvas.getContext( "2d" );
+		
 		mapData.forEach( location => {
 			let position = projection( [ location[ "long" ], location[ "lat" ] ] )
 
@@ -200,7 +201,39 @@
 				context.fill();
 
 				context.font = "12px Lato";
-				context.fillText( location[ "label" ], Math.floor( position[ 0 ] ) + labelDisplacement, Math.floor( position[ 1 ] ) + 4 )
+
+				let textDimension =  context.measureText( location["label"] );
+
+				let textWidth = textDimension.width;
+				let textHeight = textDimension.actualBoundingBoxAscent + textDimension.actualBoundingBoxDescent + 10;
+
+				context.globalAlpha = 0.9;
+				if( lineDisplacement < 0 ){
+					roundRect( context, 
+						position[ 0 ] + lineDisplacement - (textWidth + 15),
+						position[ 1 ] - 0.5 * textHeight, 
+						textWidth + 10, 
+						textHeight, 
+						5, 
+						"#33655F"
+					)
+				} else {
+					roundRect( context, 
+						position[ 0 ] + lineDisplacement + 5,
+						position[ 1 ] - 0.5 * textHeight, 
+						textWidth + 10, 
+						textHeight, 
+						5, 
+						"#33655F"
+					)
+				}
+				context.globalAlpha = 1;
+
+				// Might want to make adjustments to the positions eventually
+				let yPos = Math.floor( position[ 1 ] );
+				let xPos = Math.floor( position[ 0 ] ) + labelDisplacement;
+				context.fillStyle = "#FFF";
+				context.fillText( location[ "label" ], xPos, yPos + 4 )
 			}
 			
 		})
