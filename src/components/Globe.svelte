@@ -170,7 +170,6 @@
 			context.fillStyle = "#33655F"
 			context.strokeStyle = "#33655F"
 			context.fill()
-			
 			context.globalAlpha = 1;
 			
 			// Labels are not set as GeoJSON so have to manually obtain 
@@ -192,26 +191,33 @@
 					context.textAlign = "end";
 				}
 
+				let textY = position[1];
+				let textX = position[0];
+
+				if( location.lower ){
+					textY = position[1] + 20
+				}
+
 				context.moveTo( position[0], position[1] )
-				context.lineTo( position[0] + lineDisplacement, position[1] )
+				context.lineTo( position[0] + lineDisplacement, textY )
 				context.stroke();
 
 				context.beginPath()
-				context.arc( position[0] + lineDisplacement, position[1], 3, 0, Math.PI*2 )
+				context.arc( position[0] + lineDisplacement, textY, 3, 0, Math.PI*2 )
 				context.fill();
 
-				context.font = "12px Lato";
+				context.font = "10px Lato";
 
 				let textDimension =  context.measureText( location["label"] );
 
 				let textWidth = textDimension.width;
-				let textHeight = textDimension.actualBoundingBoxAscent + textDimension.actualBoundingBoxDescent + 10;
+						let textHeight = textDimension.actualBoundingBoxAscent + textDimension.actualBoundingBoxDescent + 10;
 
 				context.globalAlpha = 0.9;
 				if( lineDisplacement < 0 ){
 					roundRect( context, 
 						position[ 0 ] + lineDisplacement - (textWidth + 15),
-						position[ 1 ] - 0.5 * textHeight, 
+						textY - 0.5 * textHeight, 
 						textWidth + 10, 
 						textHeight, 
 						5, 
@@ -220,7 +226,7 @@
 				} else {
 					roundRect( context, 
 						position[ 0 ] + lineDisplacement + 5,
-						position[ 1 ] - 0.5 * textHeight, 
+						textY - 0.5 * textHeight, 
 						textWidth + 10, 
 						textHeight, 
 						5, 
@@ -230,9 +236,9 @@
 				context.globalAlpha = 1;
 
 				// Might want to make adjustments to the positions eventually
-				let yPos = Math.floor( position[ 1 ] );
+				let yPos = Math.floor( textY );
 				let xPos = Math.floor( position[ 0 ] ) + labelDisplacement;
-				context.fillStyle = "#FFF";
+				context.fillStyle = "#ECECEC";
 				context.fillText( location[ "label" ], xPos, yPos + 4 )
 			}
 			

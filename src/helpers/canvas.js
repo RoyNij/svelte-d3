@@ -1,5 +1,6 @@
 /**
- * From https://stackoverflow.com/a/3368118 solution by
+ * From Stack Overflow https://stackoverflow.com/a/3368118 solution 
+ * by Juan Mendes https://stackoverflow.com/users/227299/juan-mendes
  * 
  * Draws a rounded rectangle using the current state of the canvas.
  * If you omit the last three params, it will draw a rectangle
