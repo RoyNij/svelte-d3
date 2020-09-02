@@ -1,7 +1,6 @@
 <script>
     import ResponsiveWrapper from './components/ResponsiveWrapper.svelte';
     import Map from './components/Map.svelte';
-    import Grid from './components/Grid.svelte';
     import Button from './components/Button.svelte';
 </script>
 
