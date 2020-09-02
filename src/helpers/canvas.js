@@ -52,3 +52,20 @@ export function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
 	  ctx.stroke();
 	}
 }
+
+/**
+ * 
+ * @param {Object} entity object with at least a numeric x and y property
+ * @param {Object} reference object with at least a numeric x and y property
+ * @param {Integer} radius collision radius to check against
+ * 
+ * @returns {Boolean} 
+ */
+export function detectCircularCollision( entity, reference, radius ){
+	const dx = entity.x - reference.x
+	const dy = entity.y - reference.y
+
+	const dist = Math.sqrt( dx * dx + dy * dy )
+
+	return dist < radius
+}

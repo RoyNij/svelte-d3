@@ -17,7 +17,11 @@
 		geoCircle,
 		geoDistance
 	} from 'd3-geo';
-	import { roundRect } from './../helpers/canvas';
+	import { 
+		roundRect,
+		detectCircularCollision
+	} from './../helpers/canvas';
+
 
 	/**
 	 * PROPS
@@ -148,7 +152,8 @@
 			}
 			return json( dataUrl )
 				.then( ( data ) => {
-					mapData = data
+					mapData = prepareData( data )
+					
 					drawData();
 					resolve( data )
 				})
@@ -156,6 +161,38 @@
 					reject( err )
 				})
 		} );
+	}
+
+	const prepareData = ( raw_data ) => {
+		let result
+
+		// Sort according to longitude position from east to west
+		result = raw_data.sort( ( a, b ) => {
+			if( a[ 'long' ] === b[ 'long' ] ) return 0;
+
+			return a[ 'long' ] > b[ 'long' ] ? -1 : 1
+		} )
+
+		// Setup start x and y values
+		result.forEach( d => {
+			let pos = projection( [ d[ 'long' ], d[ 'lat' ] ])
+			d.x = pos[ 0 ]
+			d.y = pos[ 1 ]
+		})
+
+		// Check for possible collisions and indicate this
+		result.forEach( ( d, i ) => {
+			d.lower = result.filter( ( dd, j ) =>  i !== j )
+				.some( dd => {
+					if( dd.lat > d.lat ){
+						return detectCircularCollision( d, dd, 20 )
+					}
+					return false
+				})
+
+		} )
+	
+		return result;
 	}
 
 	const drawData = () => {
