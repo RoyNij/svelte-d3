@@ -21,7 +21,9 @@
 		roundRect,
 		detectCircularCollision
 	} from './../helpers/canvas';
-
+	import {
+		eulerAngles
+	} from './../helpers/maps';
 
 	/**
 	 * PROPS
@@ -44,13 +46,22 @@
 	let map = {};
 	let mapData = [];
 	let sphere = {type: "Sphere" }
-	let rotationPosition = 0;
+	let rotationPosition = [0, -5, 0];
 	let rotationMultiplier = 0.1;
 	let rotationInterval;
+	let isRotating = true;
+
+	let dragPosition = [0, 0];
+	let touchStarted;
 	/**
 	 * REFS
 	 */
-	let canvas;
+	let canvas, overlay;
+	
+	/**
+	 * STYLING
+	 */
+	$: overlayStyle = `width: ${width}px; height: ${height}px;`
 	/**
 	 * REACTIVE
 	 */
@@ -86,10 +97,11 @@
 	}
 
 	const drawMap = () => {
+		const context = canvas.getContext( "2d" );
+		
 		return new Promise( ( resolve, reject ) => {
 			try{
-				const context = canvas.getContext( "2d" );
-				projection.rotate( [rotationPosition*rotationMultiplier, -5, 0])
+				projection.rotate( rotationPosition )
 				
 				mapPath.context( context );
 
@@ -114,35 +126,42 @@
 		} )
 	}
 
+	function drawRotation( context ){		 
+		context.clearRect(0, 0, width, height )
+
+		context.beginPath();
+		mapPath( sphere );
+		context.fillStyle = "#F0EDEB"
+		context.fill();
+
+		context.beginPath()
+		mapPath( map )
+		context.strokeStyle = "#737474"
+		context.strokeWidth = 0.5
+		context.fillStyle = "#969593"
+		context.stroke();
+		context.fill();
+
+		drawData();
+	}
+
+	function animateRotation( context ){
+		// Set rotation postion 
+		rotationPosition[0] += ( 1 * rotationMultiplier )
+		projection.rotate( rotationPosition )
+
+		drawRotation( context );
+		rotationInterval = window.requestAnimationFrame( () => animateRotation( context) )
+
+		// If is rotating is turned off, stop the animation
+		if( !isRotating ){
+			cancelAnimationFrame( rotationInterval )
+		}
+	}
+
 	function rotateMap(){
 		const context = canvas.getContext( "2d" );
-		mapPath.context( context );
-
-		function rotationStep( t ){
-			rotationPosition += 1
-			projection.rotate( [rotationPosition*rotationMultiplier, -5, 0])
-			
-			context.clearRect(0, 0, width, height )
-
-			context.beginPath();
-			mapPath( sphere );
-			context.fillStyle = "#F0EDEB"
-			context.fill();
-
-			context.beginPath()
-			mapPath( map )
-			context.strokeStyle = "#737474"
-			context.strokeWidth = 0.5
-			context.fillStyle = "#969593"
-			context.stroke();
-			context.fill();
-
-			drawData();
-
-			rotationInterval = window.requestAnimationFrame( rotationStep )
-		}
-
-		rotationInterval = window.requestAnimationFrame( rotationStep )
+		rotationInterval = window.requestAnimationFrame( () => animateRotation( context) )
 	}
 
 	const getData = () => {
@@ -194,6 +213,10 @@
 		} )
 	
 		return result;
+	}
+
+	const updateData = () => {
+
 	}
 
 	const drawData = () => {
@@ -285,7 +308,7 @@
 	}
 
 	const loadingPromise = () => {
-		return getMap()
+		getMap()
 			.then( drawMap )
 			.then( getData )
 			.then( rotateMap )
@@ -294,6 +317,74 @@
 			})
 	}
 
+	/**
+	 * INTERACTIONS
+	 */
+	const handleDragStart = ( evt ) => {
+		evt.preventDefault()
+		// Start to see whether touc was a click or a drag
+		touchStarted = Date.now()
+	
+		// Store the starting position of the drag
+		dragPosition = [ evt.clientX || evt.touches[0].clientX, evt.clientY || evt.touches[0].clientY ]
+
+		overlay.addEventListener( "mousemove", handleDrag )
+		overlay.addEventListener( "touchmove", handleDrag, {passive: false})
+		overlay.addEventListener( "mouseup", handleDragEnd)
+		overlay.addEventListener( "touchend", handleDragEnd)
+	}
+
+	const handleDrag = ( evt ) => {
+		evt.preventDefault()
+		isRotating = false
+		// Get geographic start position
+		const startPosition = projection.invert( dragPosition );
+		const startRotation = projection.rotate()
+
+		dragPosition = [ evt.clientX || evt.touches[0].clientX, evt.clientY || evt.touches[0].clientY ]
+		
+		// Get geographic end position
+		const  endPosition = projection.invert( dragPosition );
+
+		// Calculate the new rotation with a lot of help from others
+		const endRotation = eulerAngles( startPosition, endPosition, startRotation );
+
+		// Rotate
+		if( endRotation ){
+			projection.rotate( endRotation );
+			rotationPosition = endRotation;
+			drawRotation( canvas.getContext( "2d" ) );
+		}
+	}
+
+	const handleDragEnd = ( evt ) => {
+		evt.preventDefault()
+
+		let timeDif = Date.now() - touchStarted;
+		
+		// If it can be considered a click toggle rotation
+		if( timeDif < 500 ) {
+			touchStarted = undefined;
+			
+			isRotating = !isRotating
+			
+			if( isRotating ){
+				rotateMap()
+			}
+		} else {
+			// After dragging always leave rotation off
+			isRotating = false
+		}
+
+		overlay.removeEventListener( "mousemove", handleDrag )
+		overlay.removeEventListener( "mouseup", handleDragEnd )
+		overlay.removeEventListener( "touchmove", handleDrag )
+		overlay.removeEventListener( "touchend", handleDragEnd )
+	}
+
+	/**
+	 * LIFECYCLE 
+	 */
 	onMount( loadingPromise );
 	onDestroy( () => window.cancelAnimationFrame( rotationInterval ) ); 
 	
@@ -309,10 +400,18 @@
 </script>
 
 <style>
-
+#globe-overlay{
+	position: absolute;
+	top: 0;
+	left: 0;
+}
 </style>
 
 
 <canvas width={ width } height={ height} bind:this={ canvas }>
-
 </canvas>
+<div style={ overlayStyle } bind:this={ overlay } id="globe-overlay" draggable="true"
+	on:mousedown={ handleDragStart }
+	on:touchstart|passive={ handleDragStart }
+>
+</div>

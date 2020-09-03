@@ -23,5 +23,4 @@ import Globe from "../components/Globe.svelte";
 			mapCollection="land"
 		/>
 	</ResponsiveWrapper>
-
 </div>

@@ -12,13 +12,19 @@
 </script>
 
 <div class='responsive-wrapper' bind:clientWidth={width}>
-    <div>{width} x {height}</div>
+    <div id="size-indicator">{width} x {height}</div>
     <slot width={width} height={height}>
     </slot>
 </div>
 
 <style>
+    #size-indicator{
+        top: 0;
+        left: 0;
+        position: absolute;
+    }
     .responsive-wrapper{
+        position: relative;
         width: 100%;
     }
 </style>
