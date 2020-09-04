@@ -19,11 +19,18 @@
 	} from 'd3-geo';
 	import { 
 		roundRect,
-		detectCircularCollision
+		detectCircularCollision,
+		detectBoxCollision,
+		getMousePosition,
+		Label,
 	} from './../helpers/canvas';
 	import {
 		eulerAngles
 	} from './../helpers/maps';
+	import {
+		select
+	} from 'd3-selection'
+
 
 	/**
 	 * PROPS
@@ -47,9 +54,13 @@
 	let mapData = [];
 	let sphere = {type: "Sphere" }
 	let rotationPosition = [0, -5, 0];
-	let rotationMultiplier = 0.1;
+	let rotationMultiplier = 0.15;
 	let rotationInterval;
 	let isRotating = true;
+	let locationSelected = null;
+
+	const lineDisplacement = 25
+	const labelDisplacement = 10 + lineDisplacement
 
 	let dragPosition = [0, 0];
 	let touchStarted;
@@ -185,6 +196,7 @@
 	const prepareData = ( raw_data ) => {
 		let result
 
+
 		// Sort according to longitude position from east to west
 		result = raw_data.sort( ( a, b ) => {
 			if( a[ 'long' ] === b[ 'long' ] ) return 0;
@@ -209,8 +221,23 @@
 					}
 					return false
 				})
-
 		} )
+
+		const context = canvas.getContext( "2d" );
+		
+		result.forEach( ( d ) => {
+			let labelX = d.x < width/2 ? d.x - labelDisplacement : d.x + labelDisplacement
+			let labelY = d.lower ? d.y + 20 : d.y
+			let labelAlign = d.x < width/2 ? "right" : "left"
+
+			d._canvasLabel = new Label( context, labelX, labelY, d.label )
+			
+			d._canvasLabel
+				.align( labelAlign )
+				.textColor( "#ECECEC" )
+				.bgColor( "#33655F" )
+				.font( "Lato 10px");
+		})
 	
 		return result;
 	}
@@ -219,12 +246,24 @@
 
 	}
 
+	function isVisibleOnGlobe( datapoint ){
+		const center = projection.invert( [ width/2, height/2 ] );
+		const dataloc = [ datapoint[ "long" ], datapoint[ "lat" ] ];
+		return geoDistance( dataloc, center) < 1.55
+	}
+
 	const drawData = () => {
 		const context = canvas.getContext( "2d" );
 		
 		mapData.forEach( location => {
+			// Get Cartesian coordinates from lat and long
 			let position = projection( [ location[ "long" ], location[ "lat" ] ] )
 
+			// Update the location of the datapoint on each step
+			location.x = position[ 0 ]
+			location.y = position[ 1 ]
+			
+			// Draw the circle on the location
 			context.globalAlpha = 0.8;
 			context.beginPath()
 			mapPath( positionPath.center( [location["long"], location["lat"] ] )() );
@@ -232,75 +271,30 @@
 			context.strokeStyle = "#33655F"
 			context.fill()
 			context.globalAlpha = 1;
-			
-			// Labels are not set as GeoJSON so have to manually obtain 
-			// the distance to the center in order to hide labels when on the back
-			let centerLocation = projection.invert( [width/2, height/2 ] )
+						
+			// If the point is within a quarter circle from the center draw the label
+			if( isVisibleOnGlobe( location ) ){
+				let labelX = location.x < width/2 ? location.x - labelDisplacement : location.x + labelDisplacement
+				let labelY = location.lower ? location.y + 20 : location.y
+				let labelAlign = location.x < width/2 ? "right" : "left"
 
-			// Get great arc distance in radians
-			let locationDistance = geoDistance( [ location["long"], location["lat"] ], centerLocation );
-			
-			// If the point is within a quarter circle from the center
-			if(locationDistance < 1.55 ){
-				context.textAlign = "start";
-				let lineDisplacement = 25
-				let labelDisplacement = lineDisplacement + 10
-				
-				if( position[ 0 ] < width/2 ){
-					lineDisplacement = -1 * lineDisplacement
-					labelDisplacement = -1 * labelDisplacement
-					context.textAlign = "end";
-				}
 
-				let textY = position[1];
-				let textX = position[0];
+				location._canvasLabel
+					.x( labelX )
+					.y( labelY )
+					.align( labelAlign )
 
-				if( location.lower ){
-					textY = position[1] + 20
-				}
+				let handleX = location.x < width/2 ? location.x - lineDisplacement : location.x + lineDisplacement;
 
-				context.moveTo( position[0], position[1] )
-				context.lineTo( position[0] + lineDisplacement, textY )
+				context.moveTo( location.x, location.y )
+				context.lineTo( handleX, labelY )
 				context.stroke();
 
 				context.beginPath()
-				context.arc( position[0] + lineDisplacement, textY, 3, 0, Math.PI*2 )
+				context.arc( handleX, labelY, 3, 0, Math.PI*2 )
 				context.fill();
 
-				context.font = "10px Lato";
-
-				let textDimension =  context.measureText( location["label"] );
-
-				let textWidth = textDimension.width;
-						let textHeight = textDimension.actualBoundingBoxAscent + textDimension.actualBoundingBoxDescent + 10;
-
-				context.globalAlpha = 0.9;
-				if( lineDisplacement < 0 ){
-					roundRect( context, 
-						position[ 0 ] + lineDisplacement - (textWidth + 15),
-						textY - 0.5 * textHeight, 
-						textWidth + 10, 
-						textHeight, 
-						5, 
-						"#33655F"
-					)
-				} else {
-					roundRect( context, 
-						position[ 0 ] + lineDisplacement + 5,
-						textY - 0.5 * textHeight, 
-						textWidth + 10, 
-						textHeight, 
-						5, 
-						"#33655F"
-					)
-				}
-				context.globalAlpha = 1;
-
-				// Might want to make adjustments to the positions eventually
-				let yPos = Math.floor( textY );
-				let xPos = Math.floor( position[ 0 ] ) + labelDisplacement;
-				context.fillStyle = "#ECECEC";
-				context.fillText( location[ "label" ], xPos, yPos + 4 )
+				location._canvasLabel();	
 			}
 			
 		})
@@ -326,7 +320,7 @@
 		touchStarted = Date.now()
 	
 		// Store the starting position of the drag
-		dragPosition = [ evt.clientX || evt.touches[0].clientX, evt.clientY || evt.touches[0].clientY ]
+		dragPosition = getMousePosition( evt )
 
 		overlay.addEventListener( "mousemove", handleDrag )
 		overlay.addEventListener( "touchmove", handleDrag, {passive: false})
@@ -340,8 +334,10 @@
 		// Get geographic start position
 		const startPosition = projection.invert( dragPosition );
 		const startRotation = projection.rotate()
+	
+		// Store the dragged position of the drag
+		dragPosition = getMousePosition( evt )
 
-		dragPosition = [ evt.clientX || evt.touches[0].clientX, evt.clientY || evt.touches[0].clientY ]
 		
 		// Get geographic end position
 		const  endPosition = projection.invert( dragPosition );
@@ -364,12 +360,34 @@
 		
 		// If it can be considered a click toggle rotation
 		if( timeDif < 500 ) {
-			touchStarted = undefined;
-			
 			isRotating = !isRotating
-			
-			if( isRotating ){
-				rotateMap()
+
+			// Check if a label/datapoint was clicked
+			if( mapData.length > 0){
+				const idx = mapData.findIndex( d => {
+					return detectCircularCollision( 
+						{x: dragPosition[0], y: dragPosition[1] },
+						d,
+						10
+					) || detectBoxCollision(
+						{x: dragPosition[0], y: dragPosition[1] },
+						d._canvasLabel.box()
+					)
+				} )
+
+				if( idx > -1){
+					locationSelected = mapData[ idx ]
+					isRotating = false
+				} else {
+					locationSelected = null
+					if( isRotating ){
+						rotateMap()
+					}
+				}
+			} else {
+				if( isRotating ){
+					rotateMap()
+				}
 			}
 		} else {
 			// After dragging always leave rotation off
@@ -405,6 +423,16 @@
 	top: 0;
 	left: 0;
 }
+
+.location-info{
+	background-color: rgba( 51, 101, 95, 0.9 );
+	margin: 20px 10px;
+	padding: 10px;
+	color: white;
+	border-radius: 5px;
+	max-width: 300px;
+
+}
 </style>
 
 
@@ -414,4 +442,9 @@
 	on:mousedown={ handleDragStart }
 	on:touchstart|passive={ handleDragStart }
 >
+	{#if locationSelected !== null }
+	<div class="location-info">
+		<h3>{ locationSelected.label }</h3>
+	</div>
+	{/if}
 </div>
