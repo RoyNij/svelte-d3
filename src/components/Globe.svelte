@@ -35,6 +35,7 @@
 	} from 'd3-selection'
 	import CloseButton from './CloseButton.svelte'
 
+
 	/**
 	 * PROPS
 	 */
@@ -260,6 +261,9 @@
 	}
 
 	const drawData = () => {
+		if( !canvas ){
+			return
+		}
 		const context = canvas.getContext( "2d" );
 		
 		mapData.forEach( location => {
@@ -343,6 +347,7 @@
 	 */
 	const handleDragStart = ( evt ) => {
 		evt.preventDefault()
+
 		// Start to see whether touc was a click or a drag
 		touchStarted = Date.now()
 	
@@ -382,7 +387,7 @@
 
 	const handleDragEnd = ( evt ) => {
 		evt.preventDefault()
-
+		
 		let timeDif = Date.now() - touchStarted;
 		
 		// If it can be considered a click toggle rotation
@@ -402,7 +407,7 @@
 					)
 				} )
 
-				if( idx > -1){
+				if( idx > -1 && isVisibleOnGlobe( mapData[idx] ) ){
 					locationSelected = mapData[ idx ]
 					isRotating = false
 				} else {
@@ -458,15 +463,48 @@
 
 .location-info{
 	position: relative;
-	background-color: rgba( 51, 101, 95, 0.9 );
+	background-color: rgba(234, 234, 234, 0.95 );
 	border: solid 1px rgb(38, 75, 70);
 	box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
-	margin: 20px 10px;
-	padding: 10px;
-	color: white;
+	margin: 20px auto;
+	padding: 10px 20px;
+	color: #264b46;
 	border-radius: 5px;
 	max-width: 250px;
 }
+
+h3{
+	text-align: center;
+}
+.partner-sub-label{
+	margin: 3px 0;
+	font-weight: 600;
+}
+
+.partner-list{
+	margin-top: 0;
+	margin-bottom: 8px;
+	padding-inline-start: 20px;
+	font-size: 16px;
+}
+
+.partner-list li{
+	margin-bottom: 5px;
+	color: #404040;
+}
+
+@media only screen and (min-width: 768px){
+	.location-info{
+		margin: 20px 20px;
+	}
+}
+
+@media only screen and (min-width: 1400px){
+	.location-info{
+		margin: 20px calc( 50vw - 680px );
+	}
+}
+
 </style>
 
 
@@ -474,15 +512,30 @@
 </canvas>
 <div style={ overlayStyle } bind:this={ overlay } id="globe-overlay" draggable="true"
 	on:mousedown={ handleDragStart }
-	on:touchstart|passive={ handleDragStart }
+	on:touchstart={ handleDragStart }
 >
 	{#if locationSelected !== null }
 	<div class="location-info" transition:fade 
 		on:mousedown|stopPropagation 
 		on:touchstart|stopPropagation
 	>
-		<CloseButton on:close={handleInfoClose} size={20} width={2}/>
+		<CloseButton on:close={handleInfoClose} size={20} width={2} color="#264b46"/>
+		
 		<h3>{ locationSelected.label }</h3>
+		
+		{#each locationSelected.partners as partner}
+			{#if partner.label && partner.partners.length > 0}
+			<p class="partner-sub-label">{ partner.label }</p>
+			{/if}
+			{#if Array.isArray(partner.partners) && partner.partners.length > 0}
+			<ul class="partner-list">
+				{#each partner.partners as p}
+				<li>{ p }</li>
+				{/each}
+			</ul>
+			{/if}
+		{/each}
+
 	</div>
 	{/if}
 </div>

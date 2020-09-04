@@ -3,71 +3,299 @@
 		"label": "Bogotá, Colombia",
 		"long": -74.063644,
 		"lat": 4.624335,
-		"partners": [ "Cepei" ]
+		"partners": [ 
+			{
+				"id" : "general",
+				"partners": [ "Cepei" ]
+			},
+			{
+				"id" : "global",
+				"partners": [],
+				"label": "Global Partner"
+			},
+			{
+				"id" : "regional",
+				"partners": [],
+				"label": "Regional and In-country Partners"
+			}
+		]
 	},
 	{
 		"label": "Paris, France",
 		"long": 2.3488,
-		"lat": 48.85341
+		"lat": 48.85341,
+		"partners": [ 
+			{
+				"id" : "general",
+				"partners": []
+			},
+			{
+				"id" : "global",
+				"partners": [ "PARIS 21" ],
+				"label": "Global Partner"
+			},
+			{
+				"id" : "regional",
+				"partners": [],
+				"label": "Regional and In-country Partners"
+			}
+		]
 	},
 	{
 		"label": "Geneva, Switzerland",
 		"long": 6.143158,
-		"lat": 46.204391
+		"lat": 46.204391,
+		"partners": [ 
+			{
+				"id" : "general",
+				"partners": [ "UN-RCP" ]
+			},
+			{
+				"id" : "global",
+				"partners": [],
+				"label": "Global Partner"
+			},
+			{
+				"id" : "regional",
+				"partners": [],
+				"label": "Regional and In-country Partners"
+			}
+		]
 	},
 	{
 		"label": "Dakar, Senegal",
+		"sublabel": "Regional and In-country Partners:",
 		"long": -17.467686,
-		"lat": 14.716677
+		"lat": 14.716677,
+		"partners": [ 
+			{
+				"id" : "general",
+				"partners": []
+			},
+			{
+				"id" : "global",
+				"partners": [],
+				"label": "Global Partner"
+			},
+			{
+				"id" : "regional",
+				"partners": [ "AIMS" ],
+				"label": "Regional and In-country Partners"
+			}
+		]
 	},
 	{
 		"label": "Beirut, Lebanon",
 		"long": 35.495480,
-		"lat": 33.888630
+		"lat": 33.888630,
+		"partners": [ 
+			{
+				"id" : "general",
+				"partners": [ "UN-RCP" ] 
+			},
+			{
+				"id" : "global",
+				"partners": [],
+				"label": "Global Partner"
+			},
+			{
+				"id" : "regional",
+				"partners": [],
+				"label": "Regional and In-country Partners"
+			}
+		]
 	},
 	{
 		"label": "Addis Ababa, Ethiopia",
 		"long": 38.763611,
-		"lat": 9.005401
+		"lat": 9.005401,
+		"partners": [ 
+			{
+				"id" : "general",
+				"partners": [ "UN-RCP" ]
+			},
+			{
+				"id" : "global",
+				"partners": [],
+				"label": "Global Partner"
+			},
+			{
+				"id" : "regional",
+				"partners": [],
+				"label": "Regional and In-country Partners"
+			}
+		]
 	},
 	{
 		"label": "Nairobi, Kenya",
+		"sublabel": "Regional and In-country Partners:",
 		"long": 36.817223,
-		"lat": -1.286389
+		"lat": -1.286389,
+		"partners": [ 
+			{
+				"id" : "general",
+				"partners": []
+			},
+			{
+				"id" : "global",
+				"partners": [],
+				"label": "Global Partner"
+			},
+			{
+				"id" : "regional",
+				"partners": [ "LDRI" ],
+				"label": "Regional and In-country Partners"
+			}
+		]
 	},
 	{
-		"label": "Nagpur, India",
+		"label": "India",
+		"sublabel": "Regional and In-country Partners:",
 		"long": 79.088860,
-		"lat": 21.146633
+		"lat": 21.146633,
+		"partners": [ 
+			{
+				"id" : "general",
+				"partners": []
+			},
+			{
+				"id" : "global",
+				"partners": [],
+				"label": "Global Partner"
+			},
+			{
+				"id" : "regional",
+				"partners": [ "The Center for Internet & Society"],
+				"label": "Regional and In-country Partners"
+			}
+		]
 	},
 	{
 		"label": "Bangkok, Thailand",
 		"long": 100.523186,
-		"lat": 13.736717
+		"lat": 13.736717,
+		"partners": [ 
+			{
+				"id" : "general",
+				"partners": [ "UN-RCP" ]
+			},
+			{
+				"id" : "global",
+				"partners": [],
+				"label": "Global Partner"
+			},
+			{
+				"id" : "regional",
+				"partners": [],
+				"label": "Regional and In-country Partners"
+			}
+		]
 	},
 	{
 		"label": "New York City, USA",
+		"sublabel": "Global Partner:",
 		"long": -73.935242,
-		"lat": 	40.730610
+		"lat": 	40.730610,
+		"partners": [ 
+			{
+				"id" : "general",
+				"partners": []
+			},
+			{
+				"id" : "global",
+				"partners": [ "UN STATISTICS DIVISION (UNSD)", "GPSDD", "SDSN TReNDS" ],
+				"label": "Global Partner"
+			},
+			{
+				"id" : "regional",
+				"partners": [],
+				"label": "Regional and In-country Partners"
+			}
+		]
 	},
 	{
 		"label": "Seattle, USA",
+		"sublabel": "Global Partner:",
 		"long": -122.335167,
-		"lat": 47.608013
+		"lat": 47.608013,
+		"partners": [ 
+			{
+				"id" : "general",
+				"partners": []
+			},
+			{
+				"id" : "global",
+				"partners": [ "TABLEAU" ],
+				"label": "Global Partner"
+			},
+			{
+				"id" : "regional",
+				"partners": [],
+				"label": "Regional and In-country Partners"
+			}
+		]
 	},
 	{
 		"label": "San Francisco, USA",
 		"long": -122.431297,
-		"lat": 	37.773972
+		"lat": 	37.773972,
+		"partners": [ 
+			{
+				"id" : "general",
+				"partners": []
+			},
+			{
+				"id" : "global",
+				"partners": [ "MAPBOX" ],
+				"label": "Global Partner"
+			},
+			{
+				"id" : "regional",
+				"partners": [],
+				"label": "Regional and In-country Partners"
+			}
+		]
 	},
 	{
 		"label": "Washington D.C., USA",
 		"long":  -77.03637,
-		"lat": 	38.89511
+		"lat": 	38.89511,
+		"partners": [ 
+			{
+				"id" : "general",
+				"partners": []
+			},
+			{
+				"id" : "global",
+				"partners": [ "DATA2X" ],
+				"label": "Global Partner"
+			},
+			{
+				"id" : "regional",
+				"partners": [],
+				"label": "Regional and In-country Partners"
+			}
+		]
 	},
 	{
 		"label": "Santiago, Chile",
 		"long": -70.645348,
-		"lat": -33.459229
+		"lat": -33.459229,
+		"partners": [ 
+			{
+				"id" : "general",
+				"partners": [ "UN-RCP" ]
+			},
+			{
+				"id" : "global",
+				"partners": [],
+				"label": "Global Partner"
+			},
+			{
+				"id" : "regional",
+				"partners": [],
+				"label": "Regional and In-country Partners"
+			}
+		]
 	}
 ]
