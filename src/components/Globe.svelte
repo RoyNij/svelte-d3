@@ -8,6 +8,9 @@
 		afterUpdate,
 		beforeUpdate 
 	} from 'svelte';
+	import {
+		fade
+	} from 'svelte/transition';
     const topojson = require('topojson');
     import { json } from 'd3-fetch';
     import { 
@@ -30,7 +33,7 @@
 	import {
 		select
 	} from 'd3-selection'
-
+	import CloseButton from './CloseButton.svelte'
 
 	/**
 	 * PROPS
@@ -234,9 +237,9 @@
 			
 			d._canvasLabel
 				.align( labelAlign )
-				.textColor( "#ECECEC" )
-				.bgColor( "#33655F" )
-				.font( "Lato 10px");
+				.textColor( "#404040" )
+				// .bgColor( "#FEFEFE" )
+				.font( "10px Comfortaa");
 		})
 	
 		return result;
@@ -246,10 +249,14 @@
 
 	}
 
-	function isVisibleOnGlobe( datapoint ){
+	function distanceFromCenter( datapoint ){
 		const center = projection.invert( [ width/2, height/2 ] );
 		const dataloc = [ datapoint[ "long" ], datapoint[ "lat" ] ];
-		return geoDistance( dataloc, center) < 1.55
+		return geoDistance( dataloc, center );
+	}
+
+	function isVisibleOnGlobe( datapoint ){
+		return distanceFromCenter( datapoint ) < 1.55;
 	}
 
 	const drawData = () => {
@@ -271,32 +278,52 @@
 			context.strokeStyle = "#33655F"
 			context.fill()
 			context.globalAlpha = 1;
-						
+		} )
+		
+		mapData.forEach( location => {
 			// If the point is within a quarter circle from the center draw the label
 			if( isVisibleOnGlobe( location ) ){
-				let labelX = location.x < width/2 ? location.x - labelDisplacement : location.x + labelDisplacement
-				let labelY = location.lower ? location.y + 20 : location.y
-				let labelAlign = location.x < width/2 ? "right" : "left"
-
-
-				location._canvasLabel
-					.x( labelX )
-					.y( labelY )
-					.align( labelAlign )
-
-				let handleX = location.x < width/2 ? location.x - lineDisplacement : location.x + lineDisplacement;
-
-				context.moveTo( location.x, location.y )
-				context.lineTo( handleX, labelY )
-				context.stroke();
-
-				context.beginPath()
-				context.arc( handleX, labelY, 3, 0, Math.PI*2 )
-				context.fill();
-
-				location._canvasLabel();	
+				
 			}
+		})
+
+		mapData.sort( (a, b) => {
+			if( distanceFromCenter( a ) === distanceFromCenter( b )){
+				return 0
+			}
+			return distanceFromCenter( a ) < distanceFromCenter( b ) ? 1 : -1;
+		}).filter( location => {
+			return isVisibleOnGlobe( location )
+		}).forEach( location => {
+			let labelX = location.x < width/2 ? 
+					location.x - labelDisplacement : 
+					location.x + labelDisplacement
+				
+			let labelY = location.lower ? location.y + 20 : location.y
+			let labelAlign = location.x < width/2 ? "right" : "left"
 			
+			let handleX = location.x < width/2 ? 
+					location.x - lineDisplacement : 
+					location.x + lineDisplacement;
+
+
+			location._canvasLabel
+				.x( labelX )
+				.y( labelY )
+				.align( labelAlign )
+
+			context.fillStyle = "#33655F"
+			context.strokeStyle = "#33655F"
+
+			context.moveTo( location.x, location.y )
+			context.lineTo( handleX, labelY )
+			context.stroke();
+
+			context.beginPath()
+			context.arc( handleX, labelY, 3, 0, Math.PI*2 )
+			context.fill();
+			
+			location._canvasLabel();
 		})
 		
 	}
@@ -400,6 +427,10 @@
 		overlay.removeEventListener( "touchend", handleDragEnd )
 	}
 
+	const handleInfoClose = () => {
+		locationSelected = null
+	}
+
 	/**
 	 * LIFECYCLE 
 	 */
@@ -422,16 +453,19 @@
 	position: absolute;
 	top: 0;
 	left: 0;
+	font-family: Comfortaa, Lato, sans-serif;
 }
 
 .location-info{
+	position: relative;
 	background-color: rgba( 51, 101, 95, 0.9 );
+	border: solid 1px rgb(38, 75, 70);
+	box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
 	margin: 20px 10px;
 	padding: 10px;
 	color: white;
 	border-radius: 5px;
-	max-width: 300px;
-
+	max-width: 250px;
 }
 </style>
 
@@ -443,7 +477,11 @@
 	on:touchstart|passive={ handleDragStart }
 >
 	{#if locationSelected !== null }
-	<div class="location-info">
+	<div class="location-info" transition:fade 
+		on:mousedown|stopPropagation 
+		on:touchstart|stopPropagation
+	>
+		<CloseButton on:close={handleInfoClose} size={20} width={2}/>
 		<h3>{ locationSelected.label }</h3>
 	</div>
 	{/if}

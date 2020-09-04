@@ -11,10 +11,6 @@ body{
     width: 50%;
 }
 
-.container .responsive-wrapper{
-    background-color: #DEDEDE;
-}
-
 .map .background{
     fill: steelblue;
 }

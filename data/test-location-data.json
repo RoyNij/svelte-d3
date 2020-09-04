@@ -2,7 +2,8 @@
 	{
 		"label": "Bogotá, Colombia",
 		"long": -74.063644,
-		"lat": 4.624335
+		"lat": 4.624335,
+		"partners": [ "Cepei" ]
 	},
 	{
 		"label": "Paris, France",

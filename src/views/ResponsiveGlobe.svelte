@@ -5,7 +5,9 @@ import Globe from "../components/Globe.svelte";
 </script>
 
 <style>
-
+.container{
+	background-color: #2E7276;
+}
 </style>
 
 <div class='container'>

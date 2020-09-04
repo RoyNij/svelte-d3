@@ -1,3 +1,5 @@
+import { get_current_component } from "svelte/internal";
+
 /**
  * From Stack Overflow https://stackoverflow.com/a/3368118 solution 
  * by Juan Mendes https://stackoverflow.com/users/227299/juan-mendes
@@ -187,13 +189,14 @@ export function Label( context, x, y, text, padding ){
 
 	function draw( ){
 		_ctx.globalAlpha = 0.9
-		
-		let box = draw.box()
+		_ctx.font = _font;
 
-		roundRect( _ctx, box.x, box.y, box.width, box.height, 5, _bgColor )
+		let box = draw.box()
+		_ctx.fillStyle = _bgColor
+		roundRect( _ctx, box.x, box.y, box.width, box.height, 5, true, true)
 		_ctx.globalAlpha = 1
 		_ctx.fillStyle = _textColor
-		_ctx.fillText( _text, box.x + _padding.left, _y + 0.8 * _padding.top )
+		_ctx.fillText( _text, box.x + _padding.left, _y + _padding.top )
 	}
 
 	return draw
