@@ -1,0 +1,92 @@
+[
+	{
+		"label": "Costa Rica",
+		"long": -84.087502,
+		"lat": 9.934739,
+		"link": "https://www.showntelldata.com"
+	},
+	{
+		"label": "Ecuador",
+		"long": -78.467834,
+		"lat": -0.180653,
+		"link": "https://www.showntelldata.com"
+	},
+	{
+		"label": "Argentina",
+		"long": -57.969559,
+		"lat": -34.920345,
+		"link": "https://www.showntelldata.com"
+	},
+	{
+		"label": "Senegal",
+		"long": -17.467686,
+		"lat": 14.716677,
+		"link": "https://www.showntelldata.com"
+	},
+	{
+		"label": "Cameroon",
+		"long": 9.910191,
+		"lat": 2.940594,
+		"link": "https://www.showntelldata.com"
+	},
+	{
+		"label": "Kosovo",
+		"long": 21.166191,
+		"lat": 	42.667542,
+		"link": "https://www.showntelldata.com"
+	},
+	{
+		"label": "Moldova",
+		"long": 28.7881371,
+		"lat": 46.9999648,
+		"link": "https://www.showntelldata.com"
+	},
+	{
+		"label": "Malawi",
+		"long": 32.0517027,
+		"lat": -13.2332216,
+		"link": "https://www.showntelldata.com"
+	},
+	{
+		"label": "Comoros",
+		"long": 43.6005816,
+		"lat": -11.9022359,
+		"link": "https://www.showntelldata.com"
+	},
+	{
+		"label": "Madagascar",
+		"long": 46.4070513,
+		"lat": 	-19.2566917,
+		"link": "https://www.showntelldata.com"
+	},
+	{
+		"label": "Uzbekistan",
+		"long": 62.6626114,
+		"lat": 42.165482,
+		"link": "https://www.showntelldata.com"
+	},
+	{
+		"label": "Sri Lanka",
+		"long": 80.6209411,
+		"lat": 	7.6902432,
+		"link": "https://www.showntelldata.com"
+	},
+	{
+		"label": "Vietnam",
+		"long":  108.4024746,
+		"lat": 14.1307744,
+		"link": "https://www.showntelldata.com"
+	},
+	{
+		"label": "Indonesia",
+		"long": 112.9567236,
+		"lat": -2.7521198,
+		"link": "https://www.showntelldata.com"
+	},
+	{
+		"label": "Timor-Leste",
+		"long": 125.7934514,
+		"lat": -8.7193133,
+		"link": "https://www.showntelldata.com"
+	}
+]

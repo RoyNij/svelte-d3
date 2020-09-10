@@ -37,6 +37,16 @@ export const ResponsiveGlobeView = () => ({
     }
 })
 
+export const ResponsiveGlobeViewWithLinks = () => ({
+    Component: ResponsiveGlobe,
+    props: {
+        width: 900,
+        bgColor: '#C4C2C0',
+        color: '#35224B',
+        dataUrl: '/test-location-link-data.json'
+    }
+})
+
 // export const ThreeGlobe = () => ({
 //     Component: Globe3D
 // })
