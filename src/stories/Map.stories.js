@@ -33,7 +33,8 @@ export const SimpleGlobe = () => ({
 export const ResponsiveGlobeView = () => ({
     Component: ResponsiveGlobe,
     props: {
-        width: 900
+        width: 900,
+        dataUrl: '/test-partners-data.json'
     }
 })
 

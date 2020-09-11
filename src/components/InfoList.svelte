@@ -51,6 +51,8 @@ const handleClose = function(){
 
 .sub-list{
 	margin-top: 0;
+	margin-left: 0;
+	margin-right: 0;
 	margin-bottom: 8px;
 	padding-inline-start: 20px;
 	font-size: 16px;
@@ -87,6 +89,7 @@ const handleClose = function(){
 		width={2} 
 		color={ color } 
 	/>
+
 	{#if content[ titleVar ] }
 	<h3 class='list-title'>{ content[ titleVar ] }</h3>
 	{/if}
@@ -100,6 +103,22 @@ const handleClose = function(){
 
 			<ul class="sub-list">
 				{#each item[ subListVar ] as subitem }
+				<li class="sub-item">{ subitem }</li>
+				{/each}
+			</ul>
+		{/if}
+	{/each}
+	{/if}
+
+	{#if Array.isArray( Object.keys( content[ listVar ] ) ) && Object.keys( content[ listVar ] ).length > 0 }
+	{#each Object.keys( content[ listVar ] ) as list_key }
+		{#if Array.isArray( content[ listVar ][ list_key ][ subListVar ] ) &&  content[ listVar ][ list_key ][ subListVar ].length > 0}
+			{#if content[ listVar ][ list_key ][ listLabelVar ] }
+			<p class='list-label'>{ content[ listVar ][ list_key ][ listLabelVar ] }</p>
+			{/if}
+
+			<ul class="sub-list">
+				{#each content[ listVar ][ list_key ][ subListVar ] as subitem}
 				<li class="sub-item">{ subitem }</li>
 				{/each}
 			</ul>

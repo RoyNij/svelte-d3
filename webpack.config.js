@@ -3,10 +3,15 @@ const path = require('path');
 module.exports = {
     mode: 'development',
     devtool: 'source-map',
-    entry: './src/index.js',
+    entry: {
+        main: './src/index.js',
+        globe: './src/globe.js'
+    },
     output: {
         filename: '[name]-bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
+        library: 'GlobeComponent',
+        libraryTarget: 'umd'
     },
     module: {
         rules : [
@@ -21,5 +26,6 @@ module.exports = {
         alias: {
             svelte: path.resolve('node_modules', 'svelte')
         },
-    }
+    },
+    
 }
