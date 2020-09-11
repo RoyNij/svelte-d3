@@ -14219,7 +14219,7 @@ function instance($$self, $$props, $$invalidate) {
 	};
 
 	const loadingPromise = () => {
-		getMap().then(drawMap).then(getData).then(rotateMap).catch(err => {
+		getMap().then(getData).then(drawMap).then(rotateMap).catch(err => {
 			console.log(err);
 		});
 	};

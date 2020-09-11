@@ -329,8 +329,8 @@
 
 	const loadingPromise = () => {
 		getMap()
-			.then( drawMap )
 			.then( getData )
+			.then( drawMap )
 			.then( rotateMap )
 			.catch( err => {
 				console.log( err )
