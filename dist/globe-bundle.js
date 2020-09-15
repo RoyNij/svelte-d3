@@ -13914,7 +13914,8 @@ function create_fragment(ctx) {
 }
 
 let rotationMultiplier = 0.15;
-const lineDisplacement = 25;
+const lineDisplacement = 15;
+const lowerDisplacement = 20;
 
 function instance($$self, $$props, $$invalidate) {
 	const topojson = __webpack_require__(/*! topojson */ "./node_modules/topojson/index.js");
@@ -14040,10 +14041,10 @@ function instance($$self, $$props, $$invalidate) {
 	const prepareData = raw_data => {
 		let result;
 
-		// Sort according to longitude position from east to west
+		// Sort according to lat position from east to west
 		result = raw_data.sort((a, b) => {
-			if (a["long"] === b["long"]) return 0;
-			return a["long"] > b["long"] ? -1 : 1;
+			if (a["lat"] === b["lat"]) return 0;
+			return a["lat"] > b["lat"] ? -1 : 1;
 		});
 
 		// Setup start x and y values
@@ -14057,23 +14058,46 @@ function instance($$self, $$props, $$invalidate) {
 		result.forEach((d, i) => {
 			d.lower = result.filter((dd, j) => i !== j).some(dd => {
 				// Only move the one that is below the other
-				if (dd.lat > d.lat) {
-					return Object(_helpers_canvas__WEBPACK_IMPORTED_MODULE_5__["detectCircularCollision"])(d, dd, 50);
+				if (Object(_helpers_canvas__WEBPACK_IMPORTED_MODULE_5__["detectCircularCollision"])(d, dd, 15) && dd.lat >= d.lat) {
+					return true;
 				}
 
 				return false;
 			});
 		});
 
+		result.forEach((d, i) => {
+			const ref = Object(_helpers_canvas__WEBPACK_IMPORTED_MODULE_5__["getNearestNeighborOnTop"])(d, result);
+			d.nearestNeighbor = ref;
+
+			if (d.lower) {
+				if (ref.lower) {
+					if (ref.lowerDisplacement) {
+						d.lowerDisplacement = ref.lowerDisplacement + 15;
+					}
+				} else {
+					d.lowerDisplacement = lowerDisplacement;
+				}
+			}
+		});
+
 		const context = canvas.getContext("2d");
 
 		result.forEach(d => {
-			let labelX = d.x < width / 2
-			? d.x - labelDisplacement
-			: d.x + labelDisplacement;
+			let labelX = d.toggleSide
+			? d.x < width / 2
+				? d.x + labelDisplacement
+				: d.x - labelDisplacement
+			: d.x < width / 2
+				? d.x - labelDisplacement
+				: d.x + labelDisplacement;
 
-			let labelY = d.lower ? d.y + 20 : d.y;
-			let labelAlign = d.x < width / 2 ? "right" : "left";
+			let labelY = d.y; // d.lower ? d.y + 20 : d.y
+
+			let labelAlign = d.toggleSide
+			? d.x < width / 2 ? "left" : "right"
+			: d.x < width / 2 ? "right" : "left";
+
 			d._canvasLabel = new _helpers_canvas__WEBPACK_IMPORTED_MODULE_5__["Label"](context, labelX, labelY, d.label);
 			d._canvasLabel.align(labelAlign).textColor("#404040").bgColor("#FFFFFF").font("10px Comfortaa");
 		});
@@ -14131,16 +14155,29 @@ function instance($$self, $$props, $$invalidate) {
 		}).filter(location => {
 			return isVisibleOnGlobe(location);
 		}).forEach(location => {
-			let labelX = location.x < width / 2
-			? location.x - labelDisplacement
-			: location.x + labelDisplacement;
+			let labelX = location.toggleSide
+			? location.x < width / 2
+				? location.x + labelDisplacement
+				: location.x - labelDisplacement
+			: location.x < width / 2
+				? location.x - labelDisplacement
+				: location.x + labelDisplacement;
 
-			let labelY = location.lower ? location.y + 20 : location.y;
-			let labelAlign = location.x < width / 2 ? "right" : "left";
+			let labelY = location.lower
+			? location.y + location.lowerDisplacement
+			: location.y;
 
-			let handleX = location.x < width / 2
-			? location.x - lineDisplacement
-			: location.x + lineDisplacement;
+			let labelAlign = location.toggleSide
+			? location.x < width / 2 ? "left" : "right"
+			: location.x < width / 2 ? "right" : "left";
+
+			let handleX = location.toggleSide
+			? location.x < width / 2
+				? location.x + lineDisplacement
+				: location.x - lineDisplacement
+			: location.x < width / 2
+				? location.x - lineDisplacement
+				: location.x + lineDisplacement;
 
 			location._canvasLabel.x(labelX).y(labelY).align(labelAlign);
 			context.fillStyle = color;
@@ -15377,7 +15414,7 @@ const Globe = _views_ResponsiveGlobe_svelte__WEBPACK_IMPORTED_MODULE_0__["defaul
 /*!*******************************!*\
   !*** ./src/helpers/canvas.js ***!
   \*******************************/
-/*! exports provided: roundRect, detectCircularCollision, detectBoxCollision, getMousePosition, Label */
+/*! exports provided: roundRect, detectCircularCollision, detectBoxCollision, getNearestNeighbor, getNearestNeighborOnTop, getMousePosition, Label */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -15385,6 +15422,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "roundRect", function() { return roundRect; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "detectCircularCollision", function() { return detectCircularCollision; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "detectBoxCollision", function() { return detectBoxCollision; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNearestNeighbor", function() { return getNearestNeighbor; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getNearestNeighborOnTop", function() { return getNearestNeighborOnTop; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getMousePosition", function() { return getMousePosition; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Label", function() { return Label; });
 /* harmony import */ var svelte_internal__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! svelte/internal */ "./node_modules/svelte/internal/index.mjs");
@@ -15454,10 +15493,7 @@ function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
  * @returns {Boolean} 
  */
 function detectCircularCollision( entity, reference, radius ){
-	const dx = entity.x - reference.x
-	const dy = entity.y - reference.y
-
-	const dist = Math.sqrt( dx * dx + dy * dy )
+	const dist = getDistance( entity, reference );
 
 	return dist < radius
 }
@@ -15466,6 +15502,43 @@ function detectBoxCollision( entity, box ){
 	const inX = entity.x >= box.x && entity.x <= box.x + box.width;
 	const inY = entity.y >= box.y && entity.y <= box.y + box.height;
 	return inX && inY
+}
+
+function getDistance( entity, reference ){
+	const dx = entity.long - reference.long
+	const dy = entity.lat - reference.lat
+
+	return Math.sqrt( dx * dx + dy * dy )
+}
+
+function getNearestNeighbor( location, list ){
+	let nearest = null
+	let dist = null
+	
+	list.forEach( ref => {
+		const temp_dist = getDistance( location, ref )
+
+		if( dist === null || temp_dist < dist){
+			dist = temp_dist;
+			nearest = ref
+		}
+	})
+	return nearest
+}
+
+function getNearestNeighborOnTop( location, list ){
+	let nearest = null
+	let dist = null
+	
+	list.forEach( ref => {
+		const temp_dist = getDistance( location, ref )
+
+		if( ref.lat > location.lat && ( dist === null || temp_dist < dist ) ){
+			dist = temp_dist;
+			nearest = ref
+		}
+	})
+	return nearest
 }
 
 function getMousePosition( evt ){

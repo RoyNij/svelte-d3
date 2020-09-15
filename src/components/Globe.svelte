@@ -24,6 +24,8 @@
 		roundRect,
 		detectCircularCollision,
 		detectBoxCollision,
+		getNearestNeighbor,
+		getNearestNeighborOnTop,
 		getMousePosition,
 		Label,
 	} from './../helpers/canvas';
@@ -65,8 +67,9 @@
 	let isRotating = true;
 	let locationSelected = null;
 
-	const lineDisplacement = 25
+	const lineDisplacement = 15
 	const labelDisplacement = 10 + lineDisplacement
+	const lowerDisplacement = 20
 
 	let dragPosition = [0, 0];
 	let touchStarted;
@@ -203,11 +206,11 @@
 		let result
 
 
-		// Sort according to longitude position from east to west
+		// Sort according to lat position from east to west
 		result = raw_data.sort( ( a, b ) => {
-			if( a[ 'long' ] === b[ 'long' ] ) return 0;
+			if( a[ 'lat' ] === b[ 'lat' ] ) return 0;
 
-			return a[ 'long' ] > b[ 'long' ] ? -1 : 1
+			return a[ 'lat' ] > b[ 'lat' ] ? -1 : 1
 		} )
 
 		// Setup start x and y values
@@ -222,19 +225,40 @@
 			d.lower = result.filter( ( dd, j ) =>  i !== j )
 				.some( dd => {
 					// Only move the one that is below the other
-					if( dd.lat > d.lat ){
-						return detectCircularCollision( d, dd, 50 )
+					if(  detectCircularCollision( d, dd, 15 ) && dd.lat >= d.lat ){
+						return true
 					}
 					return false
 				})
 		} )
 
+		result.forEach( (d, i ) => {
+			const ref = getNearestNeighborOnTop( d, result )
+			d.nearestNeighbor = ref
+
+			if( d.lower ){
+				if( ref.lower ){
+					if( ref.lowerDisplacement ){
+						d.lowerDisplacement = ref.lowerDisplacement + 15
+					} 
+				} else {
+					d.lowerDisplacement = lowerDisplacement
+				}
+			}
+		})
+
 		const context = canvas.getContext( "2d" );
 		
 		result.forEach( ( d ) => {
-			let labelX = d.x < width/2 ? d.x - labelDisplacement : d.x + labelDisplacement
-			let labelY = d.lower ? d.y + 20 : d.y
-			let labelAlign = d.x < width/2 ? "right" : "left"
+			let labelX = d.toggleSide ? 
+				( d.x < width/2 ? d.x + labelDisplacement : d.x - labelDisplacement ) :
+				( d.x < width/2 ? d.x - labelDisplacement : d.x + labelDisplacement )
+			
+			let labelY = d.y // d.lower ? d.y + 20 : d.y
+			
+			let labelAlign = d.toggleSide ?
+				( d.x < width/2 ? "left" : "right" ) :
+				( d.x < width/2 ? "right" : "left" )
 
 			d._canvasLabel = new Label( context, labelX, labelY, d.label )
 			
@@ -294,16 +318,19 @@
 		}).filter( location => {
 			return isVisibleOnGlobe( location )
 		}).forEach( location => {
-			let labelX = location.x < width/2 ? 
-					location.x - labelDisplacement : 
-					location.x + labelDisplacement
-				
-			let labelY = location.lower ? location.y + 20 : location.y
-			let labelAlign = location.x < width/2 ? "right" : "left"
+			let labelX = location.toggleSide ? 
+				( location.x < width/2 ? location.x + labelDisplacement : location.x - labelDisplacement ) :
+				( location.x < width/2 ? location.x - labelDisplacement : location.x + labelDisplacement )
 			
-			let handleX = location.x < width/2 ? 
-					location.x - lineDisplacement : 
-					location.x + lineDisplacement;
+			let labelY = location.lower ? location.y + location.lowerDisplacement : location.y
+			
+			let labelAlign = location.toggleSide ?
+				( location.x < width/2 ? "left" : "right" ) :
+				( location.x < width/2 ? "right" : "left" )
+			
+			let handleX = location.toggleSide ? 
+				( location.x < width/2 ? location.x + lineDisplacement : location.x - lineDisplacement ) :
+				( location.x < width/2 ? location.x - lineDisplacement : location.x + lineDisplacement )
 
 
 			location._canvasLabel

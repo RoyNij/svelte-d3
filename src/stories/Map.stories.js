@@ -34,19 +34,19 @@ export const ResponsiveGlobeView = () => ({
     Component: ResponsiveGlobe,
     props: {
         width: 900,
-        dataUrl: '/test-partners-data.json'
+        dataUrl: '/test-partners-data-v2.json'
     }
 })
 
-export const ResponsiveGlobeViewWithLinks = () => ({
-    Component: ResponsiveGlobe,
-    props: {
-        width: 900,
-        bgColor: '#C4C2C0',
-        color: '#35224B',
-        dataUrl: '/test-location-link-data.json'
-    }
-})
+// export const ResponsiveGlobeViewWithLinks = () => ({
+//     Component: ResponsiveGlobe,
+//     props: {
+//         width: 900,
+//         bgColor: '#C4C2C0',
+//         color: '#35224B',
+//         dataUrl: '/test-location-link-data.json'
+//     }
+// })
 
 // export const ThreeGlobe = () => ({
 //     Component: Globe3D

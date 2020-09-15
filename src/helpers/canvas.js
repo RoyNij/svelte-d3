@@ -64,10 +64,7 @@ export function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
  * @returns {Boolean} 
  */
 export function detectCircularCollision( entity, reference, radius ){
-	const dx = entity.x - reference.x
-	const dy = entity.y - reference.y
-
-	const dist = Math.sqrt( dx * dx + dy * dy )
+	const dist = getDistance( entity, reference );
 
 	return dist < radius
 }
@@ -76,6 +73,43 @@ export function detectBoxCollision( entity, box ){
 	const inX = entity.x >= box.x && entity.x <= box.x + box.width;
 	const inY = entity.y >= box.y && entity.y <= box.y + box.height;
 	return inX && inY
+}
+
+function getDistance( entity, reference ){
+	const dx = entity.long - reference.long
+	const dy = entity.lat - reference.lat
+
+	return Math.sqrt( dx * dx + dy * dy )
+}
+
+export function getNearestNeighbor( location, list ){
+	let nearest = null
+	let dist = null
+	
+	list.forEach( ref => {
+		const temp_dist = getDistance( location, ref )
+
+		if( dist === null || temp_dist < dist){
+			dist = temp_dist;
+			nearest = ref
+		}
+	})
+	return nearest
+}
+
+export function getNearestNeighborOnTop( location, list ){
+	let nearest = null
+	let dist = null
+	
+	list.forEach( ref => {
+		const temp_dist = getDistance( location, ref )
+
+		if( ref.lat > location.lat && ( dist === null || temp_dist < dist ) ){
+			dist = temp_dist;
+			nearest = ref
+		}
+	})
+	return nearest
 }
 
 export function getMousePosition( evt ){
