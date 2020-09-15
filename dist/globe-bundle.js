@@ -14073,7 +14073,7 @@ function instance($$self, $$props, $$invalidate) {
 			if (d.lower) {
 				if (ref.lower) {
 					if (ref.lowerDisplacement) {
-						d.lowerDisplacement = ref.lowerDisplacement + 15;
+						d.lowerDisplacement = ref.lowerDisplacement + lowerDisplacement;
 					}
 				} else {
 					d.lowerDisplacement = lowerDisplacement;
