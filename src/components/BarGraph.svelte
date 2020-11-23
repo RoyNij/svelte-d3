@@ -31,9 +31,9 @@ $: canvasWidth = width - margin.left - margin.right
 $: canvasHeight = height - margin.top - margin.bottom
 
 $: xScale = scaleBand()
-    .range([0, canvasWidth])
-    .domain(data.map(d => d[xVar]))
-    .paddingInner(0.05)
+    .range( [ 0, canvasWidth ] )
+    .domain(data.map( d => d[ xVar ]))
+    .paddingInner( 0.05 )
 
 $: scaleMax = function(){
     let dataMax = max(data.map(d => d[yVar]));
@@ -57,10 +57,7 @@ $: yScale = scaleLinear()
 
 let grow = function( node , args){
     let heightStart = 0
-    let yStart = canvasHeight
     let heightEnd = yScale(args.d[yVar])
-    let yEnd = canvasHeight - yScale(args.d[yVar])
-
 
     return {
         duration: animateHeight ? 400 : 0,
@@ -148,7 +145,6 @@ onMount(() => {
 
         <Axis scale={xScale} values={data.map(d => d[xVar])} position={{x: 0, y: canvasHeight}} />    
     </g>
-    
 </svg>
 
 <style>
