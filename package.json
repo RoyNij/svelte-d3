@@ -7,16 +7,16 @@
     "d3": "^5.16.0",
     "lodash": "^4.17.20",
     "save": "^2.4.0",
-    "svelte": "^3.24.1",
+    "svelte": "^3.29.7",
     "three": "^0.120.1",
     "topojson": "^3.0.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@storybook/svelte": "^5.3.21",
-    "babel-loader": "^8.1.0",
+    "@babel/core": "^7.12.7",
+    "@storybook/svelte": "^6.1.3",
+    "babel-loader": "^8.2.1",
     "svelte-loader": "^2.13.6",
-    "webpack": "^4.44.1",
+    "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
   },
   "scripts": {
