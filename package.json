@@ -8,7 +8,7 @@
     "lodash": "^4.17.20",
     "save": "^2.4.0",
     "svelte": "^3.29.7",
-    "three": "^0.120.1",
+    "three": "^0.125.0",
     "topojson": "^3.0.2"
   },
   "devDependencies": {
