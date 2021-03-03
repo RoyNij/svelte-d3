@@ -1,10 +1,9 @@
 # svelte-d3
 Svelte Components for D3 visualizations
 
-## Rotating Globe
+*Note: This is a work in progress based on client work, I make no promises (for now) regarding usability in other contexts than my own*
 
-### Desktop
-![example-gif-globe-desktop](https://raw.githubusercontent.com/RoyNij/svelte-d3/master/examples/rotating-globe.gif)
+## Demo 
+If you want to check out real-life examples you can check: [DEMO](https://roynij.github.io/svelte-d3)
 
-### Mobile view
-![example-gif-globe-mobile](https://raw.githubusercontent.com/RoyNij/svelte-d3/master/examples/rotating-globe-mobile.gif)
+
