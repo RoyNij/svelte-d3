@@ -8,7 +8,7 @@ export default {title : "Map"}
 export const SimpleMap = () => ({
     Component: Map,
     props : {
-        mapLocation : "/nederland.json",
+        mapLocation : "./nederland.json",
         mapCollection : "nederland",
         showLabel: true,
         labelVar: "NAME_1"
@@ -25,7 +25,7 @@ export const ResponsiveMapView = () => ({
 export const SimpleGlobe = () => ({
     Component: Globe,
     props: {
-        mapUrl: "/land-110m.json",
+        mapUrl: "./land-110m.json",
         mapCollection: "land"
     }
 })
@@ -34,7 +34,7 @@ export const ResponsiveGlobeView = () => ({
     Component: ResponsiveGlobe,
     props: {
         width: 900,
-        dataUrl: '/test-partners-data-v2.json'
+        dataUrl: './test-partners-data-v2.json'
     }
 })
 

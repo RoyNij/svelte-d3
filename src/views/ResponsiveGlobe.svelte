@@ -4,8 +4,8 @@ import Globe from "../components/Globe.svelte";
 
 export let color = "#2E7276";
 export let bgColor = "#2E7276";
-export let dataUrl = "/test-location-data.json";
-export let mapUrl = "/land-110m.json";
+export let dataUrl = "./test-location-data.json";
+export let mapUrl = "./land-110m.json";
 export let maxHeight = 600;
 export let margin = { 
 	top: 10,

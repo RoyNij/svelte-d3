@@ -9,7 +9,7 @@ let width
     <ResponsiveWrapper let:width={width}>
         <Map width={Math.floor(width)}
             aspect="16:9"
-            mapLocation="/nederland.json"
+            mapLocation="./nederland.json"
             mapCollection="nederland"
             pathId="GID_1"
         />
