@@ -1,0 +1,49 @@
+body{
+    margin: 0;
+}
+
+#app{
+    width: 100%;
+    margin: auto;
+}
+
+.left, .right{
+    width: 50%;
+}
+
+.map .background{
+    fill: steelblue;
+}
+
+.map .country{
+    stroke: #AAAAAA;
+    stroke-width: 0.25;
+    fill: #EEEEEE;
+    fill-opacity: 0.9;
+    transition: fill 0.4s;
+}
+
+.map .country:hover{
+    fill: peru;
+}
+
+.hover-box{
+    transform: translate( 20px , 10px);
+    padding: 5px;
+    border-radius: 5px;
+    background-color: white;
+    border: solid 1px #AEAEAE;
+    box-shadow: 3px 3px 5px rgba(0,0,0,0.4);
+    font-family: "Roboto Condensed";
+    font-size: 12px;
+}
+
+.axis-label{
+    font-family: "Roboto";
+    font-size: 14px;
+}
+
+.y-grid line{
+    stroke: #AEAEAE;
+    stroke-width: 0.5;
+}
