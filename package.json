@@ -24,7 +24,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --config webpack.config.js",
     "watch": "webpack --config webpack.config.js --watch",
-    "storybook": "start-storybook -s ./data, ./static"
+    "storybook": "start-storybook -s ./data, ./static",
+    "build-storybook": "build-storybook",
+    "deploy": "npm run build-storybook && gh-pages -d storybook-static"
   },
   "author": "",
   "license": "ISC"
